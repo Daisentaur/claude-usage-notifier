@@ -1,16 +1,4 @@
 #!/usr/bin/env python3
-"""
-claude_usage.py — fetch claude.ai usage stats and show a desktop notification.
-
-Reads your Firefox cookies, calls the same /usage endpoint the settings page uses,
-caches the result, and shows a notify-send notification. Designed to be triggered
-from a keyboard shortcut.
-
-Usage:
-  python3 claude_usage.py           # normal run (uses cache if fresh)
-  python3 claude_usage.py --force   # bypass cache, fetch fresh
-"""
-
 import argparse
 import json
 import logging
@@ -47,7 +35,7 @@ HEADERS = {
 
 
 # --- Default config ------------------------------------------------------
-# Used to seed config.json on first run if it doesn't exist yet.
+# Used to seed config.json on first run if it doesn't exist yet
 
 DEFAULT_CONFIG = {
     "notification_timeout_ms": 8000,
@@ -71,8 +59,7 @@ def load_config():
 
     try:
         config = json.loads(CONFIG_PATH.read_text())
-        # Fill in any missing keys from defaults (so adding new keys later
-        # doesn't break old configs).
+        # Fill in any missing keys from defaults (so adding new keys later doesn't break old configs).
         merged = {**DEFAULT_CONFIG, **config}
         return merged
     except json.JSONDecodeError as e:
@@ -245,22 +232,13 @@ def notify(title, body, config, urgency="normal"):
 
 
 def notify_error(message, config):
-    """Show an error notification (critical urgency, stays visible longer)."""
-    notify("⚠️ Claude Usage", message, config, urgency="critical")
+    notify("⚠️ Claude Usage", message, config, urgency="critical") # Putting urgency=critical makes the notification visible for longer
 
 
 # --- Main flow -----------------------------------------------------------
 
 
 def get_usage_data(config, force_refresh):
-    """
-    Try to get usage data using the stale-while-error pattern:
-      1. If cache is fresh and not --force, use it.
-      2. Otherwise try to fetch.
-      3. If fetch fails, fall back to ANY cached data (mark as stale).
-      4. If no cache either, raise.
-    Returns (data, stale_age_seconds_or_None).
-    """
     cached_data, cached_age = read_cache()
 
     # Use fresh cache if not forcing and within TTL.
