@@ -1,0 +1,8 @@
+{
+  "notification_timeout_ms": 10000,
+  "cache_ttl_seconds": 300,
+  "warning_threshold": 80,
+  "show_progress_bar": true,
+  "bar_width": 12,
+  "tls_impersonate": "firefox133"
+}
