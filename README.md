@@ -141,7 +141,7 @@ Current config options:
 ### Install
 
 ```bash
-git clone <this repo>
+git clone https://github.com/Daisentaur/claude-usage-notifier
 cd claude_usage_notifier
 python3 -m venv venv
 source venv/bin/activate
